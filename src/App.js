@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import Accaunt from "./pages/accaunt";
+import DobavPage from "./pages/dobavpage";
+import Glavn from "./pages/glavnaya";
+import Poisk from "./pages/poisk";
+import Reg from "./pages/reg";
+import "./components/app1.css";
+import {Routes, Route} from "react-router-dom";
 
-function App() {
+
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+   
+    <div >
+      <Routes> 
+        <Route path="/" element={<Glavn />} />
+        <Route path="/Accaunt" element={<Accaunt />} />
+        <Route path="/Reg" element={<Reg />} />
+        <Route path="/Poisk" element={<Poisk />} />
+        <Route path="/DobavPage" element={<DobavPage />} />
+      </Routes>
     </div>
+
+     </div>
   );
 }
 
