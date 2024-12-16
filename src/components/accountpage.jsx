@@ -11,7 +11,7 @@ const Lk =  () => {
     useEffect(()=>load(),[])
     function load(){
       const myHeaders = new Headers();
-      myHeaders.append("Authorization", `Bearer ${localStorage.token}`);
+      myHeaders.append("Authorization", С);
   
   
   const requestOptions = {

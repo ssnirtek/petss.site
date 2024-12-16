@@ -223,48 +223,7 @@ const Obv = () => {
           />
         </div>
 
-        <div className="form-group">
-          <label>Регистрация:</label>
-          <br></br>
-          <input
-            type="checkbox"
-            name="register"
-            checked={formData.register}
-            onChange={handleChange}
-          />
-          
-          <span> Зарегистрировать пользователя</span>
-        </div>
-
-        {formData.register && (
-          <>
-            <div className="form-group">
-              <label>Пароль:</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="form-control"
-                required
-              />
-              {errors.password && <small className="form-text text-danger">{errors.password}</small>}
-            </div>
-
-            <div className="form-group">
-              <label>Подтверждение пароля:</label>
-              <input
-                type="password"
-                name="password_confirmation"
-                value={formData.password_confirmation}
-                onChange={handleChange}
-                className="form-control"
-                required
-              />
-              {errors.password_confirmation && <small className="form-text text-danger">{errors.password_confirmation}</small>}
-            </div>
-          </>
-        )}
+        
 
         <div className="form-group">
           <label>
