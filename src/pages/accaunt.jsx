@@ -13,14 +13,16 @@ import React, { useEffect, useState } from "react";
 
 
     const Accaunt =  () => {
-        let [users, SetUsers]=useState([]);
+        let [user, SetUser]=useState([]);
         useEffect(()=>load(),[])
         function load(){
           fetch("https://pets.сделай.site/api/pets")
               .then((response) => response.json())
               .then((result) => {
                   console.log(result);
-                  SetPet(result.data.orders.map((item)=><Lichn data={item}/>))
+                  SetUser(result.data.orders.map((item) => <Lichn key={item.id} data={item} />));
+
+
    
               })
       }
@@ -29,7 +31,7 @@ import React, { useEffect, useState } from "react";
         <div>
         <Header/>
        <ButtonReg/>
-        {users}
+        {user}
         <Lichn2/>
         <MyButton/>
         <Footer/> 
