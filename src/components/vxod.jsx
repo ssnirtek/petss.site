@@ -9,15 +9,12 @@ const Login = () => {
   let [token, setToken]=useState();
  function auth(e){  
     e.preventDefault();
-    //'use strict'
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementById('form')
   
-    // Loop over them and prevent submission
-  
+
         if (!forms.checkValidity()) {
-         // e.preventDefault()
+        
           e.stopPropagation()
           forms.classList.add('was-validated')
 return

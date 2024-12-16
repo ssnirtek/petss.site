@@ -2,19 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Lichn(props) {
-  const navigate = useNavigate(); // Инициализируем хук навигации
+  const navigate = useNavigate(); 
 
-  // Состояния для редактирования email и номера телефона
   const [isEditingEmail, setIsEditingEmail] = useState(false);
   const [isEditingPhone, setIsEditingPhone] = useState(false);
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
-  // Стейт для загрузки и ошибок
-  const [loading, setLoading] = useState(false); // Один стейт для обоих полей
+  const [loading, setLoading] = useState(false); 
   const [error, setError] = useState('');
 
-  // Восстановление значений из localStorage при загрузке компонента
   useEffect(() => {
     const savedEmail = localStorage.getItem('email');
     const savedPhone = localStorage.getItem('phone');
@@ -32,7 +29,6 @@ function Lichn(props) {
     }
   }, [props.data.email, props.data.phone]);
 
-  // Функция для выхода из аккаунта
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
@@ -41,35 +37,50 @@ function Lichn(props) {
     navigate('/');
   };
 
-  // Функция для отправки изменений на сервер
-  const updateUserData = async () => {
+  const updateEmail = async () => {
     setLoading(true);
     setError('');
 
     try {
-      const response = await fetch('https://pets.сделай.site/api/pets/', {
-        method: 'POST',
+      const response = await fetch('https://pets.сделай.site/api/users/email', {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, phone }),
+        body: JSON.stringify({ email }),
       });
 
-      // Логируем ответ от сервера
       const data = await response.json();
-      console.log(data);  // Логируем полный ответ от сервера для диагностики
-
-      if (response.ok) {  // Проверяем успешность HTTP статуса
-        if (data.success) {
-          // Если запрос успешный, сохраняем данные в localStorage
-          localStorage.setItem('email', email);
-          localStorage.setItem('phone', phone);
-          alert('Данные успешно изменены!');
-          setIsEditingEmail(false);
-          setIsEditingPhone(false);
-        } else {
-          setError('Ошибка при обновлении данных: ' + (data.message || ''));
-        }
+      if (response.ok && data.success) {
+        localStorage.setItem('email', email);
+        alert('Электронная почта успешно изменена!');
+        setIsEditingEmail(false);
       } else {
-        setError('Ошибка на сервере: ' + (data.message || 'Неизвестная ошибка'));
+        setError('Ошибка при обновлении электронной почты: ' + (data.message || ''));
+      }
+    } catch (error) {
+      setError('Произошла ошибка на сервере: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updatePhone = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('https://pets.сделай.site/api/users/phone', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone }),
+      });
+
+      const data = await response.json();
+      if (response.ok && data.success) {
+        localStorage.setItem('phone', phone);
+        alert('Номер телефона успешно изменен!');
+        setIsEditingPhone(false);
+      } else {
+        setError('Ошибка при обновлении номера телефона: ' + (data.message || ''));
       }
     } catch (error) {
       setError('Произошла ошибка на сервере: ' + error.message);
@@ -106,6 +117,12 @@ function Lichn(props) {
                     className="form-control"
                   />
                 )}
+                <button 
+                  className="btn text-white ms-3" 
+                  style={{ backgroundColor: '#000000' }} 
+                  onClick={isEditingEmail ? updateEmail : () => setIsEditingEmail(true)}>
+                  {isEditingEmail ? 'Сохранить' : 'Изменить'}
+                </button>
               </td>
             </tr>
             <tr>
@@ -121,6 +138,12 @@ function Lichn(props) {
                     className="form-control"
                   />
                 )}
+                <button 
+                  className="btn text-white ms-3" 
+                  style={{ backgroundColor: '#000000' }} 
+                  onClick={isEditingPhone ? updatePhone : () => setIsEditingPhone(true)}>
+                  {isEditingPhone ? 'Сохранить' : 'Изменить'}
+                </button>
               </td>
             </tr>
             <tr>
@@ -142,25 +165,6 @@ function Lichn(props) {
         <div className="text-center mt-3">
           <button className="btn text-white" style={{ backgroundColor: '#8B0000' }} onClick={handleLogout}>Выйти</button>
         </div>
-
-        {/* Кнопки редактирования */}
-        <div className="text-center mt-3">
-          {!isEditingEmail && !isEditingPhone && (
-            <>
-              <button className="btn text-white" style={{ backgroundColor: '#000000' }} onClick={() => setIsEditingEmail(true)}>Изменить почту</button>
-              <button className="btn text-white ms-3" style={{ backgroundColor: '#000000' }} onClick={() => setIsEditingPhone(true)}>Изменить телефон</button>
-            </>
-          )}
-        </div>
-
-        {/* Сохранение данных (email и phone) */}
-        {(isEditingEmail || isEditingPhone) && (
-          <div className="text-center mt-3">
-            <button className="btn btn-success" onClick={updateUserData} disabled={loading}>
-              {loading ? 'Сохраняем...' : 'Сохранить данные'}
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
