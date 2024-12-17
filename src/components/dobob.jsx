@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Obv = () => {
+const Obv = (props) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
@@ -107,7 +107,6 @@ const Obv = () => {
     try {
       const response = await fetch('https://pets.сделай.site/api/pets', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', "Authorization": " Bearer "+localStorage.token },
         body: formDataToSend,
       });
 
@@ -117,15 +116,12 @@ const Obv = () => {
         setSuccessMessage('Объявление успешно добавлено.');
         navigate('/'); // Перенаправление на главную страницу
       } else {
-        // Логирование ошибок для отладки
-        console.error('Ошибка сервера:', result);
         setErrorMessage(result.error?.message || 'Ошибка при добавлении объявления.');
         if (result.error?.errors) {
           setErrors(result.error.errors);
         }
       }
     } catch (error) {
-      console.error('Ошибка при отправке данных:', error);
       setErrorMessage('Ошибка при отправке данных.');
     }
   };
@@ -270,7 +266,7 @@ const Obv = () => {
           </label>
           {errors.confirm && <small className="form-text text-danger">{errors.confirm}</small>}
         </div>
-        <br />
+        <br></br>
         <button type="submit" className="btn" style={{ backgroundColor: '#bbc6c9' }}>
           Добавить объявление
         </button>
