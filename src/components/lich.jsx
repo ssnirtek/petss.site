@@ -4,8 +4,11 @@ import { useNavigate } from 'react-router-dom';
 function Lichn(props) {
   const navigate = useNavigate(); 
 
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [isEditingPhone, setIsEditingPhone] = useState(false);
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+
   const [loading, setLoading] = useState(false); 
   const [error, setError] = useState('');
 
@@ -13,8 +16,17 @@ function Lichn(props) {
     const savedEmail = localStorage.getItem('email');
     const savedPhone = localStorage.getItem('phone');
 
-    setEmail(savedEmail || props.data.email);
-    setPhone(savedPhone || props.data.phone);
+    if (savedEmail) {
+      setEmail(savedEmail);
+    } else {
+      setEmail(props.data.email);
+    }
+
+    if (savedPhone) {
+      setPhone(savedPhone);
+    } else {
+      setPhone(props.data.phone);
+    }
   }, [props.data.email, props.data.phone]);
 
   const handleLogout = () => {
@@ -25,27 +37,22 @@ function Lichn(props) {
     navigate('/');
   };
 
-  const token = localStorage.getItem(' Bearer 58xn0vKJdr98HCZc0l9Pnmmb4A63OCQzb9oI1PGJQeK6RQvQwgHzeyzB9f0dIInnmronoe5omPRjbr9Z'); // Получите токен из localStorage
-
-
-  
-
   const updateEmail = async () => {
     setLoading(true);
     setError('');
-    const token = localStorage.getItem('token'); // Получите токен из localStorage
-  
+
     try {
-      const response = await fetch('https://pets.xn--80ahdri7a.site/api/users/email', {
+      const response = await fetch('https://pets.сделай.site/api/users/email', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', "Authorization": " Bearer "+localStorage.token },
         body: JSON.stringify({ email }),
       });
-  
+
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('email', email);
         alert('Электронная почта успешно изменена!');
+        setIsEditingEmail(false);
       } else {
         setError('Ошибка при обновлении такой адресс электронной почты уже существует ' + (data.message || ''));
       }
@@ -55,23 +62,23 @@ function Lichn(props) {
       setLoading(false);
     }
   };
-  
+
   const updatePhone = async () => {
     setLoading(true);
     setError('');
-    const token = localStorage.getItem('token'); // Получите токен из localStorage
-  
+
     try {
-      const response = await fetch('https://pets.xn--80ahdri7a.site/api/users/phone', {
+      const response = await fetch('https://pets.сделай.site/api/users/phone', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', "Authorization": " Bearer "+localStorage.token },
         body: JSON.stringify({ phone }),
       });
-  
+
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('phone', phone);
         alert('Номер телефона успешно изменен!');
+        setIsEditingPhone(false);
       } else {
         setError('Ошибка при обновлении такой номер телефона уже существует' + (data.message || ''));
       }
@@ -81,7 +88,7 @@ function Lichn(props) {
       setLoading(false);
     }
   };
-  
+
   return (
     <div className="m-5">
       <h1 className="card-title text-center mb-4">Добро пожаловать</h1>
@@ -100,34 +107,42 @@ function Lichn(props) {
             <tr>
               <td className="text-dark">Электронная почта:</td>
               <td>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="form-control"
-                />
+                {!isEditingEmail ? (
+                  <span>{email}</span>
+                ) : (
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="form-control"
+                  />
+                )}
                 <button 
                   className="btn text-white ms-3" 
                   style={{ backgroundColor: '#000000' }} 
-                  onClick={updateEmail}>
-                  Изменить
+                  onClick={isEditingEmail ? updateEmail : () => setIsEditingEmail(true)}>
+                  {isEditingEmail ? 'Сохранить' : 'Изменить'}
                 </button>
               </td>
             </tr>
             <tr>
               <td className="text-dark">Номер телефона:</td>
               <td>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="form-control"
-                />
+                {!isEditingPhone ? (
+                  <span>{phone}</span>
+                ) : (
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="form-control"
+                  />
+                )}
                 <button 
                   className="btn text-white ms-3" 
                   style={{ backgroundColor: '#000000' }} 
-                  onClick={updatePhone}>
-                  Изменить
+                  onClick={isEditingPhone ? updatePhone : () => setIsEditingPhone(true)}>
+                  {isEditingPhone ? 'Сохранить' : 'Изменить'}
                 </button>
               </td>
             </tr>
