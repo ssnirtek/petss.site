@@ -3,6 +3,8 @@ import Obv from "../components/dobob";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import Kart1 from "../components/kart1";
+import React from 'react';
+
 
 function DobavPage() {
     return ( 
