@@ -44,17 +44,17 @@ function Lichn(props) {
     try {
       const response = await fetch('https://pets.сделай.site/api/users/email', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', "Authorization": " Bearer "+localStorage.token },
         body: JSON.stringify({ email }),
       });
 
       const data = await response.json();
-      if (response.ok && data.success) {
+      if (response.ok) {
         localStorage.setItem('email', email);
         alert('Электронная почта успешно изменена!');
         setIsEditingEmail(false);
       } else {
-        setError('Ошибка при обновлении электронной почты: ' + (data.message || ''));
+        setError('Ошибка при обновлении такой адресс электронной почты уже существует ' + (data.message || ''));
       }
     } catch (error) {
       setError('Произошла ошибка на сервере: ' + error.message);
@@ -70,17 +70,17 @@ function Lichn(props) {
     try {
       const response = await fetch('https://pets.сделай.site/api/users/phone', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', "Authorization": " Bearer "+localStorage.token },
         body: JSON.stringify({ phone }),
       });
 
       const data = await response.json();
-      if (response.ok && data.success) {
+      if (response.ok) {
         localStorage.setItem('phone', phone);
         alert('Номер телефона успешно изменен!');
         setIsEditingPhone(false);
       } else {
-        setError('Ошибка при обновлении номера телефона: ' + (data.message || ''));
+        setError('Ошибка при обновлении такой номер телефона уже существует' + (data.message || ''));
       }
     } catch (error) {
       setError('Произошла ошибка на сервере: ' + error.message);
