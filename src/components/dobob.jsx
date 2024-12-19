@@ -72,25 +72,25 @@ const Obv = () => {
  
   const handleSubmit = async (e) => {
     e.preventDefault();
- 
+  
     // Базовая валидация перед отправкой
     if (!formData.name || !formData.phone || !formData.email || !formData.photos1 || !formData.confirm) {
       setErrorMessage('Пожалуйста, заполните все обязательные поля.');
       return;
     }
- 
+  
     // Проверка на наличие хотя бы одного фото
     if (!formData.photos1 || formData.photos1.length === 0) {
       setErrorMessage('Пожалуйста, добавьте хотя бы одно изображение.');
       return;
     }
- 
+  
     // Проверка на совпадение паролей, если регистрация включена
     if (isRegistered && formData.password !== formData.passwordConfirmation) {
       setErrorMessage('Пароли не совпадают.');
       return;
     }
- 
+  
     // Создаем объект FormData для отправки данных в формате multipart/form-data
     const form = new FormData();
     form.append('name', formData.name);
@@ -98,16 +98,16 @@ const Obv = () => {
     form.append('email', formData.email);
     form.append('district', formData.district);
     form.append('kind', formData.kind);
- 
+  
     if (isRegistered) {
       form.append('password', formData.password);
       form.append('password_confirmation', formData.passwordConfirmation);
     }
- 
+  
     form.append('confirm', formData.confirm ? 1 : 0);
     form.append('mark', formData.mark);
     form.append('description', formData.description);
- 
+  
     // Добавляем файлы, только если они существуют
     if (formData.photos1 && formData.photos1.length > 0) {
       form.append('photos1', formData.photos1[0]);
@@ -118,14 +118,14 @@ const Obv = () => {
     if (formData.photos3 && formData.photos3.length > 0) {
       form.append('photos3', formData.photos3[0]);
     }
- 
+  
     try {
       // Отправляем запрос на API
       const response = await fetch('https://pets.сделай.site/api/pets', {
         method: 'POST',
         body: form,
       });
- 
+  
       // Парсим JSON-ответ
       const data = await response.json();
       console.log(response);
@@ -135,7 +135,9 @@ const Obv = () => {
         setErrorMessage('');
       } else {
         // Ошибка: показываем сообщения об ошибках валидации
-        setErrorMessage(data.error.errors);
+        // Преобразуем объект ошибок в строку
+        const errorMessages = Object.values(data.error.errors).flat().join(', ');
+        setErrorMessage(errorMessages || 'Произошла ошибка.');
         setSuccessMessage('');
       }
     } catch (error) {
@@ -352,7 +354,7 @@ const Obv = () => {
         {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
         {successMessage && <div className="alert alert-success">{successMessage}</div>}
  
-        <button type="submit" className="btn btn-primary">Добавить объявление</button>
+        <button type="submit" className="btn btn-dark">Добавить объявление</button>
       </form>
     </main>
   );

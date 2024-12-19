@@ -7,6 +7,7 @@ import Lichn from "../components/lich";
 import Lichn2 from "../components/lichn2";
 import MyButton from "../components/mybutton";
 import React, { useEffect, useState } from "react";
+import MyAds from "../components/MyAds";
     const Accaunt =  () => {
         let [user, SetUser]=useState([]);
         useEffect(()=>load(),[])
@@ -33,7 +34,7 @@ import React, { useEffect, useState } from "react";
         <Header/>
        <ButtonReg/>
         {user}
-        <Lichn2/>
+        <MyAds/>
         <MyButton/>
         <Footer/> 
         </div>

@@ -1,17 +1,20 @@
-import Padding from "../components/Padding";
-import AnimalCardsContainer from "../components/animpoisk";
+
 import Footer from "../components/footer";
 import Header from "../components/header";
-import AnimalCard from "../components/animalpoisk";
+import AnimalSearchForm from "../components/AnimalSearchForm";
+import FoundAnimalsCards from "../components/FoundAnimalsCards";
+import React, { useState } from 'react';
 import Poissski from "../components/poiisk";
 
+const Poisk= () => {
+    const [searchParams, setSearchParams] = useState({});
 
-function Poisk() {
     return ( 
         <div>
             <Header/>
     
-<AnimalCardsContainer/>
+             <Poissski/>
+            
 
             <Footer/>
         </div>
