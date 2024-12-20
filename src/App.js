@@ -7,7 +7,7 @@ import "./components/app1.css";
 import {Routes, Route} from "react-router-dom";
 import DetailsPage from "./pages/details";
 import AnimalSearch from "./pages/AnimalSearch";
-
+import CardDetails from "./components/CardDetails";
 
 const App = () => {
   return (
@@ -20,7 +20,8 @@ const App = () => {
         <Route path="/Reg" element={<Reg />} />
         <Route path="/AnimalSearch" element={<AnimalSearch />} />
         <Route path="/DobavPage" element={<DobavPage />} />
-        <Route path="/details/:id" element={<DetailsPage/>}/>
+        <Route path="/card/:id" element={<CardDetails/>}/>
+        
       </Routes>
     </div>
 
